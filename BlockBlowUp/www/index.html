@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Aşağıdaki meta etiketindeki içerik güvenliği ilkesini gerektiği gibi özelleştirin. Satır içi JavaScript’i etkinleştirmek için default-src’ye “unsafe-inline” özelliği ekleyin.
+    Ayrıntılı bilgi için http://go.microsoft.com/fwlink/?LinkID=617521 adresini ziyaret edin.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="css/game.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/index.css">-->
+    <title>BlockBlowUp</title>
+</head>
+<body >
+    <div data-role="page"  id="StartPage">
+        <div role="main" class="ui-content page-content">
+            <div style="width:50%; margin-left:auto; margin-right:auto; position:relative; top:20%;">
+                Boyut Seç :
+                <select id="boyutlar">
+                   </select>
+            </div>
+            <div id="menu" style="position:relative;">
+                <a href="#GamePlay" data-transition="slideup">START</a>
+                <a href="#">HIGH SCORES</a>
+                <a href="#">SETTINGS</a>
+            </div>
+        </div>
+    </div>
+    <div data-role="page" id="GamePlay">
+        <div role="main" class="ui-content page-content" >
+
+            <br />
+            <div style="background-color: white;">
+                <p style="text-align: right; margin-right:5%;">
+                    <span style="font-weight: bold; text-transform: uppercase; font-size: large;">Score : </span>
+                    <span id="score"> 0 </span>
+                </p>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="block-area" id="area">
+            </div>
+            <div style="clear:both;"></div>
+            <div id="board">
+                <div>
+                    <p>
+                        <input type="button" name="Undo" value="Undo" id="btnUndo">Undo
+                    </p>
+                    <p>Cleared Blocks : <span id="clearedBlockNumber">0</span></p>
+                </div>
+                <div id="color-list">
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <div data-role="page">
+        <div role="main">
+            Game End
+        </div>
+    </div>
+    <div data-role="page">
+        <div role="main">
+            Settings
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="scripts/GameClass.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>
