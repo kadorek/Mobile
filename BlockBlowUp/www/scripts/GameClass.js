@@ -25,9 +25,9 @@
         ];
         this.Size = null;
         this.AreaElement = document.getElementById(areaId);
-        if (gameSize != null) {
+        if (gameSize !== null) {
             for (var i = 0; i < Game.AvaliableSizes.length; i++) {
-                if (gameSize == Game.AvaliableSizes[i].Name) {
+                if (gameSize === Game.AvaliableSizes[i].Name) {
                     this.Size = Game.AvaliableSizes[i];
                     break;
                 }
@@ -39,7 +39,7 @@
         window.addEventListener("keypress", function (e) {
             // body... 
             var evtobj = window.event ? event : e
-            if (evtobj.keyCode == 13 && evtobj.ctrlKey) {
+            if (evtobj.keyCode === 13 && evtobj.ctrlKey) {
                 this.SlideTheScreen("End", "container");
             }
         })
@@ -97,6 +97,7 @@
         this.UpdateBlocks();
     }
     AddBlocks2() {
+        this.AreaElement.innerHTML = "";
         this.OrganizeCounts(this.Size);
         var aH = Number(this.AreaElement.offsetHeight);
         var aW = Number(this.AreaElement.offsetWidth);
@@ -121,7 +122,7 @@
                 do {
                     // statement
                     typeIndex = this.RandomIntFromInterval(0, this.TypeCount - 1);
-                } while (this.TypeCounts[typeIndex] == 0);
+                } while (this.TypeCounts[typeIndex] === 0);
                 this.TypeCounts[typeIndex] -= 1;
                 b.setAttribute("color", this.blockTypes[typeIndex].color);
                 b.setAttribute("top", b.style.top);
@@ -159,7 +160,7 @@
         var aW = Number(this.AreaElement.offsetWidth);
         for (var i = 0; i < arr.length; i++) {
             var x = document.getElementById(arr[i]);
-            if (x == null) { continue; }
+            if (x === null) { continue; }
             if (removedCols.indexOf(x.getAttribute("col")) < 0) {
                 removedCols.push(x.getAttribute("col"));
             }
@@ -167,8 +168,8 @@
             removedItemCount++;
         }
         //block aşağı kaydırmak için
-        for (var i = 0; i < removedCols.length; i++) {
-            var obj = document.querySelectorAll('[col="' + removedCols[i] + '"]');
+        for (var i1 = 0; i1 < removedCols.length; i1++) {
+            var obj = document.querySelectorAll('[col="' + removedCols[i1] + '"]');
             rowIndex = this.Size.RowCount - 1;
             colIndex = this.Size.ColCount - 1;
             for (var j = obj.length - 1; j >= 0; j--) {
@@ -183,21 +184,21 @@
         var rCNumbers = removedCols.map(Number);
         var minCol = rCNumbers.min();
         var unEmptyColumns = [];
-        for (var i = minCol; i < this.Size.ColCount; i++) {
-            var obj = document.querySelectorAll('[col="' + i + '"]');
-            if (obj.length > 0) {
-                unEmptyColumns.push(i);
+        for (var i2 = minCol; i2 < this.Size.ColCount; i2++) {
+            var objx = document.querySelectorAll('[col="' + i2 + '"]');
+            if (objx.length > 0) {
+                unEmptyColumns.push(i2);
             }
         }
-        for (var i = 0; i < unEmptyColumns.length; i++) {
+        for (var i3 = 0; i3 < unEmptyColumns.length; i3++) {
             //unEmptyColumns[i]
-            var obj = document.querySelectorAll('[col="' + unEmptyColumns[i] + '"]');
-            for (var j = 0; j < obj.length; j++) {
-                var bx = obj[j];
-                bx.setAttribute("col", minCol + i);
+            var obj1 = document.querySelectorAll('[col="' + unEmptyColumns[i3] + '"]');
+            for (var j1 = 0; j1 < obj1.length; j1++) {
+                var bx = obj1[j1];
+                bx.setAttribute("col", minCol + i3);
                 bx.style.left =( Number(bx.getAttribute("col")) * aW / this.Size.ColCount)+"px";
                 var bxr = bx.getAttribute("row");
-                bx.setAttribute("id", "b_" + bxr + "_" + (minCol + i));
+                bx.setAttribute("id", "b_" + bxr + "_" + (minCol + i3));
             }
         }
         this.UpdateBlocks();
@@ -251,20 +252,20 @@
             var rightBlock = document.getElementById("b_" + row + "_" + right);
             var upBlock = document.getElementById("b_" + up + "_" + col);
             var downBlock = document.getElementById("b_" + down + "_" + col);
-            if (leftBlock != null && leftBlock.getAttribute("color") == b.getAttribute("color") && leftBlock.getAttribute("selected") != "1") {
+            if (leftBlock !== null && leftBlock.getAttribute("color") === b.getAttribute("color") && leftBlock.getAttribute("selected") !== "1") {
                 stack.push(leftBlock);
             }
-            if (rightBlock != null && rightBlock.getAttribute("color") == b.getAttribute("color") && rightBlock.getAttribute("selected") != "1") {
+            if (rightBlock !== null && rightBlock.getAttribute("color") === b.getAttribute("color") && rightBlock.getAttribute("selected") !== "1") {
                 stack.push(rightBlock);
             }
-            if (upBlock != null && upBlock.getAttribute("color") == b.getAttribute("color") && upBlock.getAttribute("selected") != "1") {
+            if (upBlock !== null && upBlock.getAttribute("color") === b.getAttribute("color") && upBlock.getAttribute("selected") !== "1") {
                 stack.push(upBlock);
             }
-            if (downBlock != null && downBlock.getAttribute("color") == b.getAttribute("color") && downBlock.getAttribute("selected") != "1") {
+            if (downBlock !== null && downBlock.getAttribute("color") === b.getAttribute("color") && downBlock.getAttribute("selected") !== "1") {
                 stack.push(downBlock);
             }
         }
-        if (this.selectedBlocks.length == 1) {
+        if (this.selectedBlocks.length === 1) {
             this.ReColorBlocks(this.selectedBlocks);
             this.selectedBlocks = [];
         }
@@ -272,7 +273,7 @@
     ReColorBlocks(arr) {
         for (var i = 0; i < arr.length; i++) {
             var x = document.getElementById(arr[i]);
-            if (x == null) { continue; }
+            if (x === null) { continue; }
             x.style.backgroundColor = x.getAttribute("color");
             x.setAttribute("selected", "0");
         }
@@ -324,7 +325,7 @@
             _divText.style.left = oL;
             _divText.style.top = oT;
             _divText.addEventListener("transitionend", function (e) {
-                if (e.propertyName == "transform") {
+                if (e.propertyName === "transform") {
                     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
                 }
             })
@@ -361,15 +362,15 @@
             var xColor = x.getAttribute("color");
             for (var j = 0; j < neighboorIds.length; j++) {
                 let xN = document.getElementById(neighboorIds[j]);
-                if (xN == null) { continue; }
-                if (xN.getAttribute("color") == xColor) {
+                if (xN === null) { continue; }
+                if (xN.getAttribute("color") === xColor) {
                     durum = true;
                     sayac++;
                 }
                 durum = false;
             }
         }
-        if (sayac == 0) {
+        if (sayac === 0) {
             //alert("bitti");
             this.Wait(1000);
             this.SlideTheScreen("End", "container");
@@ -383,7 +384,7 @@
         c.addEventListener("click", (e) => { this.UndoClick(e) });
     }
     UndoClick(event) {
-        if (this.previousState == null) { return; }
+        if (this.previousState === null) { return; }
         this.AreaElement.innerHTML = this.previousState;
         this.previousState = null;
         var _bs = document.querySelectorAll(".block[selected='1']");
@@ -392,8 +393,8 @@
             _bs[i].setAttribute("selected", "0");
         }
         var _blxs = document.getElementsByClassName("block")
-        for (var i = 0; i < _blxs.length; i++) {
-            _blxs[i].addEventListener("click", (e) => { this.BlockClick(e) });
+        for (var i2 = 0; i2 < _blxs.length; i2++) {
+            _blxs[i2].addEventListener("click", (e) => { this.BlockClick(e) });
         }
         this.WriteScore(_bs.length, false);
     }
@@ -401,14 +402,14 @@
         var slc = event.target;
         var choosenSizeName = (slc.value || slc.options[slc.selectedIndex].value)
         for (var i = 0; i < Game.AvaliableSizes.length; i++) {
-            if (choosenSizeName == Game.AvaliableSizes[i].Name) {
+            if (choosenSizeName === Game.AvaliableSizes[i].Name) {
                 this.Size = Game.AvaliableSizes[i];
                 break;
             }
         }
         this.SetArea(this.Size);
         this.AreaElement.innerHTML = "";
-        this.AddBlocks();
+        this.AddBlocks2();
     }
     CreateSelectBox(boxId) {
         var s = document.getElementById(boxId);
@@ -416,7 +417,7 @@
             var opt = document.createElement("option");
             opt.innerText = Game.AvaliableSizes[i].Name + "(" + Game.AvaliableSizes[i].RowCount + "X" + Game.AvaliableSizes[i].ColCount + ")";
             opt.setAttribute("value", Game.AvaliableSizes[i].Name)
-            if (this.Size.Name == opt.getAttribute("value")) { opt.setAttribute("selected", "selected") }
+            if (this.Size.Name === opt.getAttribute("value")) { opt.setAttribute("selected", "selected") }
             s.appendChild(opt);
             //Game.AvaliableSizes[i]
         }
@@ -437,7 +438,7 @@
             var node = document.getElementById(blockList[i]);
             var cNode = node.cloneNode(true);
             cloneArea.appendChild(cNode);
-            if (i == blockList.length - 1) {
+            if (i === blockList.length - 1) {
                 /*cNode.addEventListener("transitionend", function(e) {
                     if (e.propertyName == "top") {
                         e.target.parentElement.parentElement.removeChild(e.target.parentElement);
@@ -445,7 +446,7 @@
                 });*/
                 cNode.addEventListener("transitionend", (e) => {
                     //function (e) {
-                    if (e.propertyName == "top") {
+                    if (e.propertyName === "top") {
                         e.target.parentElement.parentElement.removeChild(e.target.parentElement);
                     }
                     //}
@@ -488,7 +489,7 @@
         console.log("page refresh");
         var _aid = this.jq.mobile.activePage.attr("id");
         console.log(_aid);
-        if (_aid == "GamePlay") {
+        if (_aid === "GamePlay") {
             e.preventDefault();
         }
     }

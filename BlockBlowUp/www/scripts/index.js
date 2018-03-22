@@ -30,7 +30,7 @@ function onResume() {
 function onPageChange(e, d) {
     var active = $.mobile.activePage.attr("id");
     //console.log();
-    if (active == "GamePlay") {
+    if (active === "GamePlay") {
         game.AddBlocks2();
         game.CreateBoard("color-list")
     }
