@@ -7,8 +7,10 @@
             new GameSize("XL", 90, 60, 10, 9)
         ];
     }
-    constructor(areaId, gameSize) {
+    constructor(areaId, gameSize,_jq) {
         //console.log("game const");
+        //console.log(jq)
+        this.jq=_jq
         this.body = document.getElementsByTagName("body")[0];
         this.previousState = null;
         this.selectedBlocks = [];
@@ -41,6 +43,8 @@
                 this.SlideTheScreen("End", "container");
             }
         })
+        window.addEventListener("beforeunload", (e) => this.WindowRefreshBlocker(e));
+        //window.onbeforeunload((e) => { this.WindowRefreshBlocker(); });
     }
     SetArea(size) {
         this.AreaElement.style.width = size.AreaSizeW + "%";
@@ -90,6 +94,7 @@
                 b.addEventListener("click", (e) => this.BlockClick(e));
             }
         }
+        this.UpdateBlocks();
     }
     AddBlocks2() {
         this.OrganizeCounts(this.Size);
@@ -126,6 +131,7 @@
                 b.addEventListener("click", (e) => this.BlockClick(e));
             }
         }
+        this.UpdateBlocks();
     }
     ResizeBlocks() {
         var bls = document.getElementsByClassName("block");
@@ -143,7 +149,6 @@
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
     RemoveBlocks(arr) {
-        console.log("block removes")
         let rowIndex = -1;
         let colIndex = -1;
         this.MemorizeBlocks();
@@ -195,6 +200,7 @@
                 bx.setAttribute("id", "b_" + bxr + "_" + (minCol + i));
             }
         }
+        this.UpdateBlocks();
     }
     CreateBoard(colorListId) {
         this.listId = colorListId;
@@ -471,7 +477,21 @@
         //this.Wait(waitMs);
         con.style.top = "-" + (t.offsetTop + 10) + "px";
     }
-
+    UpdateBlocks() {
+        //var _blk = document.querySelectorAll(".block");
+        //for (var i = 0; i < _blk.length; i++) {
+        //    var _x = _blk[i];
+        //    _x.innerText = _x.getAttribute("row") + "-" + _x.getAttribute("col");
+        //}
+    }
+    WindowRefreshBlocker(e) {
+        console.log("page refresh");
+        var _aid = this.jq.mobile.activePage.attr("id");
+        console.log(_aid);
+        if (_aid == "GamePlay") {
+            e.preventDefault();
+        }
+    }
 }
 class GameSize {
     constructor(name, areaSizeW, areaSizeH, rowCount, colCount) {
@@ -499,4 +519,14 @@ class GameSize {
 }
 class ExtensionMethods {
     //To DO
+}
+
+Array.prototype.min = function () { return Math.min.apply(null, this); };
+Array.prototype.max = function () { return Math.max.apply(null, this); };
+String.prototype.format = function () {
+    a = this;
+    for (k in arguments) {
+        a = a.replace("{" + k + "}", arguments[k])
+    }
+    return a;
 }

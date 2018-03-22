@@ -4,7 +4,7 @@ $(document).ready(function () {
     $(document).on("pause", onPause);
     $(document).on("resume", onResume);
     $(document).on("pagechange", onPageChange);
-    game = new Game("area", "S");
+    game = new Game("area", "S", $);
     game.CreateSelectBox("boyutlar");
     game.BindUndoEvent("btnUndo");
     var slc = $("#boyutlar");
