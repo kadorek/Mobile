@@ -25,6 +25,7 @@
         ];
         this.Size = null;
         this.AreaElement = document.getElementById(areaId);
+        this.IsAtAnimation = false;
         if (gameSize !== null) {
             for (var i = 0; i < Game.AvaliableSizes.length; i++) {
                 if (gameSize === Game.AvaliableSizes[i].Name) {
@@ -224,6 +225,7 @@
         var stack = [];
         var b = event.target;
         if (this.selectedBlocks.indexOf(b.getAttribute("id")) > -1) {
+            this.IsAtAnimation = true;
             this.Animate(this.selectedBlocks);
             this.RemoveBlocks(this.selectedBlocks);
             this.WriteScore2(event.target, this.selectedBlocks.length, true);
@@ -327,6 +329,7 @@
             _divText.addEventListener("transitionend", function (e) {
                 if (e.propertyName === "transform") {
                     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
+                
                 }
             })
             _divText.style.position = 'absolute';
@@ -371,9 +374,9 @@
             }
         }
         if (sayac === 0) {
-            //alert("bitti");
-            this.Wait(1000);
-            this.SlideTheScreen("End", "container");
+            while (this.IsAtAnimation) {
+            }
+            this.jq.mobile.navigate("#End", {transition:"slideup"});
         }
     }
     MemorizeBlocks() {
@@ -450,7 +453,7 @@
                         e.target.parentElement.parentElement.removeChild(e.target.parentElement);
                     }
                     //}
-
+                    this.IsAtAnimation = false;
                     this.FinishControl();
                 });
 
