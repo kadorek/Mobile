@@ -30,11 +30,13 @@ $(document).ready(function () {
 
 
 function onDeviceReady() {
-    //console.log("dev ready");
-    //console.log(game);
-    console.log("file")
-    console.log(cordova.file)
-    console.log("ready")
+    console.log("device ready");
+    console.log(cordova.file.dataDirectory)
+
+    var h = new HighScore(cordova.file);
+
+
+        
 }
 
 function onPause() {

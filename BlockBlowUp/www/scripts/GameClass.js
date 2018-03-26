@@ -7,10 +7,10 @@
             new GameSize("XL", 90, 60, 10, 9)
         ];
     }
-    constructor(areaId, gameSize,_jq) {
+    constructor(areaId, gameSize, _jq) {
         //console.log("game const");
         //console.log(jq)
-        this.jq=_jq
+        this.jq = _jq
         this.body = document.getElementsByTagName("body")[0];
         this.previousState = null;
         this.selectedBlocks = [];
@@ -111,7 +111,7 @@
                 b.setAttribute("col", j);
                 b.setAttribute("selected", 0);
                 b.id = "b_" + i + "_" + j;
-                b.className = "block prevent-select";
+                b.className = "block prevent-select background-pattern";
                 this.AreaElement.appendChild(b);
                 b.style.left = ((aW / this.Size.ColCount) * j) + "px";
                 b.style.top = ((aH / this.Size.RowCount) * i) + "px";
@@ -176,7 +176,7 @@
             for (var j = obj.length - 1; j >= 0; j--) {
                 var y = obj[j];
                 y.setAttribute("row", rowIndex);
-                y.style.top = (aH / this.Size.RowCount * rowIndex)+"px";
+                y.style.top = (aH / this.Size.RowCount * rowIndex) + "px";
                 y.setAttribute("id", "b_" + (rowIndex--) + "_" + removedCols[i]);
             }
         }
@@ -197,7 +197,7 @@
             for (var j1 = 0; j1 < obj1.length; j1++) {
                 var bx = obj1[j1];
                 bx.setAttribute("col", minCol + i3);
-                bx.style.left =( Number(bx.getAttribute("col")) * aW / this.Size.ColCount)+"px";
+                bx.style.left = (Number(bx.getAttribute("col")) * aW / this.Size.ColCount) + "px";
                 var bxr = bx.getAttribute("row");
                 bx.setAttribute("id", "b_" + bxr + "_" + (minCol + i3));
             }
@@ -329,7 +329,7 @@
             _divText.addEventListener("transitionend", function (e) {
                 if (e.propertyName === "transform") {
                     e.target.parentElement.parentElement.removeChild(e.target.parentElement);
-                
+
                 }
             })
             _divText.style.position = 'absolute';
@@ -376,7 +376,7 @@
         if (sayac === 0) {
             while (this.IsAtAnimation) {
             }
-            this.jq.mobile.navigate("#End", {transition:"slideup"});
+            this.jq.mobile.navigate("#End", { transition: "slideup" });
         }
     }
     MemorizeBlocks() {
@@ -533,4 +533,115 @@ String.prototype.format = function () {
         a = a.replace("{" + k + "}", arguments[k])
     }
     return a;
+}
+
+
+
+class HighScore {
+
+    static get Scores() {
+        return this.scores;
+    }
+
+    constructor(fileApi) {
+        this.fileName = "scores.json";
+        this.scores = [];
+        this.fa = fileApi;
+
+        if (!CheckFileExist(this.fa.dataDirectory + this.fileName)) {
+            this.CreateFile(this.fileName);
+        }
+        this.errorHandler = function (fileName, e) {
+            var msg = '';
+
+            switch (e.code) {
+                case FileError.QUOTA_EXCEEDED_ERR:
+                    msg = 'Storage quota exceeded';
+                    break;
+                case FileError.NOT_FOUND_ERR:
+                    msg = 'File not found';
+                    break;
+                case FileError.SECURITY_ERR:
+                    msg = 'Security error';
+                    break;
+                case FileError.INVALID_MODIFICATION_ERR:
+                    msg = 'Invalid modification';
+                    break;
+                case FileError.INVALID_STATE_ERR:
+                    msg = 'Invalid state';
+                    break;
+                default:
+                    msg = 'Unknown error';
+                    break;
+            };
+
+            console.log('Error (' + fileName + '): ' + msg);
+        }
+        this.WriteToFile(this.fileName, {score:1000});
+        this.ReadFromFile(this.fileName, function (data) {
+            console.log(data);
+        });
+    }
+
+    WriteToFile(fileName, data) {
+        data = JSON.stringify(data, null, '\t');
+        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (directoryEntry) {
+            directoryEntry.getFile(fileName, { create: true }, function (fileEntry) {
+                fileEntry.createWriter(function (fileWriter) {
+                    fileWriter.onwriteend = function (e) {
+                        // for real-world usage, you might consider passing a success callback
+                        console.log('Write of file "' + fileName + '"" completed.');
+                    };
+
+                    fileWriter.onerror = function (e) {
+                        // you could hook this up with our global error handler, or pass in an error callback
+                        console.log('Write failed: ' + e.toString());
+                    };
+
+                    var blob = new Blob([data], { type: 'text/plain' });
+                    fileWriter.write(blob);
+                }, this.errorHandler.bind(null, fileName));
+            }, this.errorHandler.bind(null, fileName));
+        }, this.errorHandler.bind(null, fileName));
+    }
+
+    ReadFromFile(fileName, cb) {
+
+        var pathToFile = this.fa.dataDirectory + fileName;
+        console.log("file adress : " + pathToFile);
+        window.resolveLocalFileSystemURL(pathToFile, function (fileEntry) {
+            fileEntry.file(function (file) {
+                var reader = new FileReader();
+                reader.onloadend = function (e) {
+                    cb(JSON.parse(this.result));
+                };
+                reader.readAsText(file);
+            }, this.errorHandler.bind(null, fileName));
+        }, this.errorHandler.bind(null, fileName));
+    }
+
+    CheckFileExist(path) {
+        var reader = new FileReader();
+        reader.onloadend = function (e) {
+            if (e.target.result == null) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        reader.readAsDataURL(path);
+    }
+    
+    CreateFile(filename) {
+        var path = this.fa.dataDirectory + filename;
+        console.log(filename + " created at " + path);
+        window.resolveLocalFileSystemURL(path, function (dir) {
+            dir.getFile(filename, { create: true }, function (fileEntry) {
+                // The file has been succesfully created. Use fileEntry to read the content or delete the file
+            });
+        });
+    }
+
+
+
 }
