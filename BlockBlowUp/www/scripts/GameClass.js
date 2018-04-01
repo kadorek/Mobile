@@ -349,7 +349,7 @@
     FinishControl() {
         var durum = true;
         var sayac = 0;
-        var blcks = document.getElementsByClassName("block")
+        var blcks = document.getElementsByClassName("block");
         for (var i = 0; i < blcks.length; i++) {
             var x = blcks[i];
             var xR = x.getAttribute("row");
@@ -545,10 +545,12 @@ class HighScore {
 
     constructor(fileApi) {
         this.fileName = "scores.json";
+        console.log("filename : "+this.fileName)
         this.scores = [];
         this.fa = fileApi;
 
-        if (!CheckFileExist(this.fa.dataDirectory + this.fileName)) {
+        if (!this.CheckFileExist(this.fa.dataDirectory + this.fileName)) {
+            console.log("create file")
             this.CreateFile(this.fileName);
         }
         this.errorHandler = function (fileName, e) {
@@ -622,6 +624,7 @@ class HighScore {
 
     CheckFileExist(path) {
         var reader = new FileReader();
+        
         reader.onloadend = function (e) {
             if (e.target.result == null) {
                 return false;
@@ -629,7 +632,7 @@ class HighScore {
                 return true;
             }
         }
-        reader.readAsDataURL(path);
+      return  reader.readAsDataURL(path);
     }
     
     CreateFile(filename) {
