@@ -5,7 +5,7 @@ $(document).ready(function () {
     $(document).on("resume", onResume);
     $(document).on("pagechange", onPageChange);
     document.addEventListener("backbutton", onBackButton);
-    game = new Game("area", "S", $);
+    game = new Gamex("area", "S", $);
     game.CreateSelectBox("boyutlar");
     game.BindUndoEvent("btnUndo");
     var slc = $("#boyutlar");
@@ -31,12 +31,8 @@ $(document).ready(function () {
 
 function onDeviceReady() {
     console.log("device ready");
-    console.log(cordova.file.dataDirectory)
-
-    var h = new HighScore(cordova.file);
-
-
-        
+    console.log(cordova.file.dataDirectory);
+    //var h = new HighScore(cordova.file);        
 }
 
 function onPause() {
@@ -52,7 +48,7 @@ function onPageChange(e, d) {
     //console.log();
     if (active === "GamePlay") {
         game.AddBlocks2();
-        game.CreateBoard("color-list")
+        game.CreateBoard("color-list");
     }
 }
 

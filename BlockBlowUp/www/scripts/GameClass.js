@@ -1,4 +1,4 @@
-﻿class Game {
+﻿class Gamex {
     static get AvaliableSizes() {
         return [
             new GameSize("S", 90, 50, 6, 8),
@@ -10,7 +10,8 @@
     constructor(areaId, gameSize, _jq) {
         //console.log("game const");
         //console.log(jq)
-        this.jq = _jq
+        this.score = 0;
+        this.jq = _jq;
         this.body = document.getElementsByTagName("body")[0];
         this.previousState = null;
         this.selectedBlocks = [];
@@ -27,9 +28,9 @@
         this.AreaElement = document.getElementById(areaId);
         this.IsAtAnimation = false;
         if (gameSize !== null) {
-            for (var i = 0; i < Game.AvaliableSizes.length; i++) {
-                if (gameSize === Game.AvaliableSizes[i].Name) {
-                    this.Size = Game.AvaliableSizes[i];
+            for (var i = 0; i < Gamex.AvaliableSizes.length; i++) {
+                if (gameSize === Gamex.AvaliableSizes[i].Name) {
+                    this.Size = Gamex.AvaliableSizes[i];
                     break;
                 }
             }
@@ -43,7 +44,7 @@
             if (evtobj.keyCode === 13 && evtobj.ctrlKey) {
                 this.SlideTheScreen("End", "container");
             }
-        })
+        });
         window.addEventListener("beforeunload", (e) => this.WindowRefreshBlocker(e));
         //window.onbeforeunload((e) => { this.WindowRefreshBlocker(); });
     }
@@ -285,6 +286,7 @@
         var cBN = document.getElementById("clearedBlockNumber");
         var oldScore = Number(spn.innerText);
         if (add) {
+            
             spn.innerText = (oldScore + Math.pow(2, (scoreToAdd - 1)));
             cBN.innerText = (Number(cBN.innerText) + scoreToAdd);
         } else {
@@ -318,7 +320,8 @@
         var oldScore = Number(spn.innerText);
         if (add) {
             _divText.className = "prevent-select ";
-            spn.innerText = (oldScore + _score);
+            this.score = (oldScore + _score);
+            spn.innerText = this.score;
             cBN.innerText = (Number(cBN.innerText) + scoreToAdd);
 
             var oL = clickedObject.style.left;
@@ -340,7 +343,8 @@
             _divText.style.transform = 'scale(3,3)';
             _divText.style.opacity = '0.4';
         } else {
-            spn.innerText = (oldScore - _score);
+            this.score = (oldScore - _score);
+            spn.innerText = this.score;
             cBN.innerText = (Number(cBN.innerText) - scoreToAdd);
         }
         this.CreateBoard(this.listId);
@@ -376,7 +380,9 @@
         if (sayac === 0) {
             while (this.IsAtAnimation) {
             }
+            
             this.jq.mobile.navigate("#End", { transition: "slideup" });
+            document.getElementById("FinalScore").innerText = this.score;
         }
     }
     MemorizeBlocks() {
@@ -404,9 +410,9 @@
     SelectChange(event) {
         var slc = event.target;
         var choosenSizeName = (slc.value || slc.options[slc.selectedIndex].value)
-        for (var i = 0; i < Game.AvaliableSizes.length; i++) {
-            if (choosenSizeName === Game.AvaliableSizes[i].Name) {
-                this.Size = Game.AvaliableSizes[i];
+        for (var i = 0; i < Gamex.AvaliableSizes.length; i++) {
+            if (choosenSizeName === Gamex.AvaliableSizes[i].Name) {
+                this.Size = Gamex.AvaliableSizes[i];
                 break;
             }
         }
@@ -416,10 +422,10 @@
     }
     CreateSelectBox(boxId) {
         var s = document.getElementById(boxId);
-        for (var i = 0; i < Game.AvaliableSizes.length; i++) {
+        for (var i = 0; i < Gamex.AvaliableSizes.length; i++) {
             var opt = document.createElement("option");
-            opt.innerText = Game.AvaliableSizes[i].Name + "(" + Game.AvaliableSizes[i].RowCount + "X" + Game.AvaliableSizes[i].ColCount + ")";
-            opt.setAttribute("value", Game.AvaliableSizes[i].Name)
+            opt.innerText = Gamex.AvaliableSizes[i].Name + "(" + Gamex.AvaliableSizes[i].RowCount + "X" + Gamex.AvaliableSizes[i].ColCount + ")";
+            opt.setAttribute("value", Gamex.AvaliableSizes[i].Name)
             if (this.Size.Name === opt.getAttribute("value")) { opt.setAttribute("selected", "selected") }
             s.appendChild(opt);
             //Game.AvaliableSizes[i]
