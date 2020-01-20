@@ -31,8 +31,14 @@ $(document).ready(function () {
 
 function onDeviceReady() {
     console.log("device ready");
-    console.log(cordova.file.dataDirectory);
-    //var h = new HighScore(cordova.file);        
+
+    var FileRootPath = cordova.file.dataDirectory;
+    //console.log(cordova.file.dataDirectory);
+    //var h = new HighScore(cordova.file);      
+    document.getElementById("SandBox").innerText = cordova.file.dataDirectory;
+
+
+
 }
 
 function onPause() {
@@ -56,3 +62,17 @@ function onPageChange(e, d) {
 function onBackButton() {
     console.log("back button pressed");
 }
+
+
+
+function CreateHighScoreFile() {
+
+}
+
+function CheckFileExist() {
+
+}
+
+function WriteHighScore() {
+}
+
